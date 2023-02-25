@@ -1,0 +1,32 @@
+- hosts: hwansible
+  tasks:
+  - name: Install the latest version of Apache
+    apt:
+      name: apache2
+      state: latest
+      update_cache: yes
+
+  - name: Make sure a service is running
+    systemd:
+      name: apache2
+      state: started
+      enabled: yes
+
+  - name: Install unzip
+    yum:
+      name: unzip
+      state: latest
+
+  - name: Unarchive a file that needs to be downloaded 
+    unarchive:
+      src: https://www.free-css.com/assets/files/free-css-templates/download/page288/fiu.zip
+      dest: /var/www/
+      remote_src: yes
+
+  - name: Recursively change ownership of a directory
+    file:
+      path: /var/www/
+      state: directory
+      recurse: yes
+      owner: apache2
+      group: apache2
